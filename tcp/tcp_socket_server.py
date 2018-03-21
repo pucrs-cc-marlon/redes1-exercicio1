@@ -1,28 +1,35 @@
+import os
 import socket
 
 SERVER = socket.gethostname()
 PORT = 10000
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARQUIVO_DESTINO = os.path.join(BASE_DIR, "deletavel_file_server.txt")
 
 
 def server_tcp():
-    # Create a TCP/IP socket
+    """
+    Servidor socket TCP/IP
+    :return: None
+    """
+    # Criando o socket TCP/IP
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Bind the socket to the port
+    # Conecta o socket na porta
     server_address = (SERVER, PORT)
     print('Iniciando Servidor em {} na porta {}'.format(*server_address))
     sock.bind(server_address)
 
-    # Listen for incoming connections
+    # Escuta as conexões recebidas
     sock.listen(1)
 
     while True:
-        # Wait for a connection
+        # Esperando as conexões
         print('+++++++++ Esperando por conexão +++++++++')
         connection, client_address = sock.accept()
         try:
             print('+++++++++ Conectado por', client_address, "+++++++++")
-            with open("received_file.txt", "wb") as arq:
+            with open(ARQUIVO_DESTINO, "wb") as arq:
                 while True:
                     print('+++++++++ Recebendo o arquivo +++++++++')
                     data = connection.recv(1024)
@@ -34,7 +41,7 @@ def server_tcp():
                         print('Sem dados de', client_address)
                         break
         finally:
-            # Clean up the connection
+            # Fecha a conexão
             print("----------------- Finalizando conexão -----------------")
             connection.close()
 

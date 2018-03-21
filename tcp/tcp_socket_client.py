@@ -1,15 +1,21 @@
+import os
 import socket
 
 from tcp.tcp_socket_server import SERVER, PORT
 
-FILENAME = "file_origin.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILENAME = os.path.join(BASE_DIR, "file_client.txt")
 
 
 def client_tcp():
-    # Create a TCP/IP socket
+    """
+    Cliente de Socket TCP/IP
+    :return:
+    """
+    # Criando o TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Connect the socket to the port where the server is listening
+    # Conecta o socket na porta e o endereço do servidor
     server_address = (SERVER, PORT)
     print('++++++++++ Conectando a {} pela porta {} ++++++++++'.format(*server_address))
     sock.connect(server_address)
